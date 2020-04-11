@@ -1,0 +1,452 @@
+<!--
+  Copyright (C) 2015 Teddy Rodriguez (TROD)
+    email: cia.123trod@gmail.com
+    github: TROD-123
+
+  For Udacity's Android Developer Nanodegree
+  P1-2: Popular Movies
+
+  Currently for educational purposes only.
+-->
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    tools:context=".MainActivity$MovieDetailsFragment"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:theme="@style/DetailTheme"
+    android:focusableInTouchMode="true"> <!-- This line effectively prevents android from starting
+                                                activity scrolled partially down:
+                                                link here: http://stackoverflow.com/questions/9690246/why-does-my-android-activity-always-start-scrolled-to-the-bottom -->
+
+    <!-- For the trailer/backdrop. This is just in the background layer -->
+    <RelativeLayout
+        android:id="@+id/container_detail_banner"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/detail_banner_height"
+        android:layout_alignParentTop="true"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/imageview_banner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </RelativeLayout>
+
+    <!-- For the body. This will scroll above the banner  -->
+    <ScrollView
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:id="@+id/container_parent_detail">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- transparent overlay above banner (partial, covering top 75%) -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/detail_banner_height_quarter_3"
+                android:id="@+id/overlay_transparent_banner"
+                android:background="@android:color/transparent"/>
+
+            <!-- transparent overlay above banner (partial, covering bottom 25%), with poster
+                    and glance info -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <!-- Vertical linear layout, containing transparent overlay and content solid
+                        color bg -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/container_detail_glance"
+                    android:layout_alignBottom="@+id/container_detail_glance"
+                    android:orientation="vertical">
+
+                    <!-- transparent overlay -->
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/detail_banner_height_quarter_1"
+                        android:background="@drawable/overlay_gradient_transparent_dark"/>
+
+                    <!-- content black bg -->
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="fill_parent"
+                        android:background="@color/black"/>
+
+                </LinearLayout>
+
+                <!-- Horizontal linear layout, containing poster and glance info -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:id="@+id/container_detail_glance">
+
+                    <!-- poster -->
+                    <android.support.v7.widget.CardView
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:layout_marginLeft="@dimen/activity_padding_margin"
+                        card_view:cardCornerRadius="@dimen/grid_card_corner_radius"
+                        card_view:cardElevation="@dimen/grid_card_elevation"
+                        card_view:contentPadding="@dimen/grid_card_padding_margin">
+
+                        <android.support.v7.widget.CardView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            card_view:cardCornerRadius="@dimen/grid_card_corner_radius">
+
+                            <ImageView
+                                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:id="@+id/imageview_detail_poster" />
+
+                        </android.support.v7.widget.CardView>
+
+                    </android.support.v7.widget.CardView>
+
+                    <!-- glance info -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="@dimen/detail_banner_height_quarter_1"
+                        android:padding="@dimen/detail_content_divider_margin">
+
+                        <!-- Title -->
+                        <TextView
+                            android:id="@+id/textview_detail_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/abc_text_size_display_1_material"/>
+
+                        <!-- Release date, duration, and MPAA rating -->
+                        <TextView
+                            android:id="@+id/textview_detail_release_duration_mpaaRating"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/grey_500"
+                            android:text="@string/error_info_null"
+                            android:textSize="@dimen/abc_text_size_small_material"/>
+
+                        <!-- Rating score -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <RatingBar
+                                android:id="@+id/ratingbar_detail"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="?android:attr/ratingBarStyleSmall"
+                                android:isIndicator="true"
+                                android:max="5"/>
+
+                            <TextView
+                                android:id="@+id/textview_detail_rating"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/abc_text_size_small_material"/>
+
+                        </LinearLayout>
+
+                        <!-- Genres -->
+                        <TextView
+                            android:id="@+id/textview_detail_genres"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/error_info_null"
+                            android:textColor="@color/grey_500"
+                            android:textSize="@dimen/abc_text_size_small_material"/>
+
+                        <!-- Rating -->
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <!-- details body container (with black bg) -->
+            <LinearLayout
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/detail_content_padding_horizontal_margin"
+                android:paddingRight="@dimen/detail_content_padding_horizontal_margin"
+                android:paddingTop="@dimen/detail_content_padding_vertical_margin"
+                android:paddingBottom="@dimen/detail_content_padding_vertical_margin"
+                android:id="@+id/container_detail_body"
+                android:background="@color/black"
+                android:orientation="vertical" >
+
+                <!-- tagline -->
+                <TextView
+                    android:id="@+id/textview_detail_tagline"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/ShadowText"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/abc_text_size_medium_material"
+                    android:textStyle="bold|italic"
+                    android:gravity="bottom|center"
+                    android:paddingLeft="@dimen/detail_content_divider_margin"
+                    android:paddingRight="@dimen/detail_content_divider_margin"
+                    android:paddingBottom="@dimen/detail_content_divider_margin"/>
+
+                <!-- movie overview -->
+                <TextView
+                    android:id="@+id/textview_detail_overview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/error_info_null"
+                    android:textColor="@color/grey_500"
+                    android:textSize="@dimen/abc_text_size_medium_material"
+                    android:paddingBottom="@dimen/detail_content_divider_margin"/>
+
+                <!--
+                    cast and credits
+                -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/detail_credits"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/abc_text_size_medium_material"
+                    android:padding="@dimen/detail_content_divider_margin"/>
+
+                <!-- Actors -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="@string/detail_actors"
+                    android:textSize="@dimen/abc_text_size_small_material" />
+
+                <TextView
+                    android:id="@+id/textview_detail_actors"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/error_info_null"
+                    android:textColor="@color/grey_500"
+                    android:textSize="@dimen/abc_text_size_small_material"
+                    android:paddingBottom="@dimen/detail_content_divider_margin" />
+
+                <!-- Directors -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="@string/detail_directors"
+                    android:textSize="@dimen/abc_text_size_small_material" />
+
+                <TextView
+                    android:id="@+id/textview_detail_directors"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/error_info_null"
+                    android:textColor="@color/grey_500"
+                    android:textSize="@dimen/abc_text_size_small_material"
+                    android:paddingBottom="@dimen/detail_content_divider_margin" />
+
+                <!-- Writers -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="@string/detail_writers"
+                    android:textSize="@dimen/abc_text_size_small_material" />
+
+                <TextView
+                    android:id="@+id/textview_detail_writers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/error_info_null"
+                    android:textColor="@color/grey_500"
+                    android:textSize="@dimen/abc_text_size_small_material"
+                    android:paddingBottom="@dimen/detail_content_divider_margin" />
+
+                <!-- Backdrops -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/detail_backdrops"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/abc_text_size_medium_material"
+                    android:padding="@dimen/detail_content_divider_margin"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textview_detail_status_backdrops"
+                    android:text="@string/error_no_backdrops"
+                    android:textColor="@color/grey_500"
+                    android:textSize="@dimen/abc_text_size_small_material"/>
+
+                <org.lucasr.twowayview.TwoWayView
+                    android:id="@+id/listview_detail_backdrops"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:scrollbars="horizontal"
+                    android:scrollbarSize="@dimen/scrollbar_size"
+                    android:requiresFadingEdge="horizontal"/>
+
+                <!-- Trailers -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/detail_trailers"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/abc_text_size_medium_material"
+                    android:padding="@dimen/detail_content_divider_margin"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textview_detail_status_trailers"
+                    android:text="@string/error_no_trailers"
+                    android:textColor="@color/grey_500"
+                    android:textSize="@dimen/abc_text_size_small_material"/>
+
+                <org.lucasr.twowayview.TwoWayView
+                    android:id="@+id/listview_detail_trailers"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:scrollbars="horizontal"
+                    android:scrollbarSize="@dimen/scrollbar_size"
+                    android:requiresFadingEdge="horizontal"/>
+
+                <!--
+                    Reviews
+                -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/detail_reviews"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/abc_text_size_medium_material"
+                    android:padding="@dimen/detail_content_divider_margin"/>
+
+                <!-- Averages -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/detail_content_divider_margin">
+
+                    <!-- rating, large -->
+                    <TextView
+                        android:id="@+id/textview_detail_rating_large"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:textSize="32dp"/>
+
+                    <!-- Stars and number of ratings -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:orientation="vertical"
+                        android:layout_gravity="center_vertical">
+
+                        <RatingBar
+                            android:id="@+id/ratingbar_detail_large"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="?android:ratingBarStyleIndicator"
+                            android:isIndicator="true"
+                            android:max="5"/>
+
+                        <TextView
+                            android:id="@+id/textview_detail_rating_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/abc_text_size_small_material"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- reviews counts -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textview_detail_status_reviews"
+                    android:text="@string/error_no_reviews"
+                    android:textColor="@color/grey_500"
+                    android:textSize="@dimen/abc_text_size_small_material"
+                    android:paddingBottom="@dimen/detail_content_divider_margin"/>
+
+                <!-- reviews list -->
+                <com.thirdarm.popularmovies.utilities.NonScrollListView
+                    android:id="@+id/listview_detail_reviews"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:dividerHeight="@dimen/detail_content_divider_margin"/>
+
+                <!-- Credits and copyright -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="bottom|center_horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/footer_tmdb_prefix"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/abc_text_size_caption_material"
+                        android:textStyle="italic" />
+
+                    <TextView
+                        android:id="@+id/tmdb_link"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/footer_tmdb"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/abc_text_size_caption_material" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- Progress container to display while loading data from server -->
+    <RelativeLayout
+        android:id="@+id/container_detail_progress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        android:layout_alignParentTop="true"
+        android:visibility="gone">
+
+        <!-- Spinning wheel -->
+        <ProgressBar
+            android:id="@+id/progress_spinner_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            style="@style/Widget.AppCompat.ProgressBar" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

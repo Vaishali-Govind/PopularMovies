@@ -1,0 +1,23 @@
+<!--
+  Copyright (C) 2015 Teddy Rodriguez (TROD)
+    email: cia.123trod@gmail.com
+    github: TROD-123
+
+  For Udacity's Android Developer Nanodegree
+  P1-2: Popular Movies
+
+  Currently for educational purposes only.
+-->
+
+<!-- The main activity layout consists of a scroll view serving as the container
+        for all the fragments.  -->
+<fragment
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_movie_posters"
+    android:name="com.thirdarm.popularmovies.PostersFragment"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    tools:context=".MoviePostersFragment" tools:ignore="MergeRootFrame"
+    android:background="@color/black" >
+
+</fragment>
