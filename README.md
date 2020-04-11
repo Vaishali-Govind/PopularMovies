@@ -2,7 +2,7 @@
 
 An informational app that pulls movie details, reviews, and trailers from a public, community-driven database
 
-![Collection](/website/images/screenshot_movies_collection.png)
+
 
 ## Features
 
